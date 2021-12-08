@@ -9,9 +9,6 @@ import (
 	"strings"
 )
 
-const lanternFishCycle = 6
-const firstCycleAdds = 2
-
 func main() {
 	var inputFile string
 	inputFile = os.Args[1]
