@@ -9,7 +9,7 @@ import (
 )
 
 const numPatterns = 10
-const numOput = 4
+const numOutput = 4
 
 type Entry struct {
 	patterns []string
@@ -59,4 +59,43 @@ func main() {
 		entries = append(entries, NewEntry(fileContents[i]))
 		entries[i].Print(os.Stdout)
 	}
+
+	numUniqueSegments := countUniqueSegments(entries)
+	fmt.Printf("Part One - digits 1, 4, 7, or 8 appear %d times\n", numUniqueSegments)
+}
+
+func countUniqueSegments(entries []*Entry) int {
+	numUniqueSegments := 0
+	numEntries := len(entries)
+
+	for i := 0; i < numEntries; i++ {
+		entry := entries[i]
+		for j := 0; j < numOutput; j++ {
+			if checkDigitUnique(entry.output[j]) {
+				numUniqueSegments++
+			}
+		}
+
+	}
+
+	return numUniqueSegments
+}
+
+func checkDigitUnique(digit string) bool {
+	switch len(digit) {
+	case 2:
+		// the digit is a 1
+		fallthrough
+	case 3:
+		// the digit is a 7
+		fallthrough
+	case 4:
+		// the digit is a 4
+		fallthrough
+	case 7:
+		// the digit is an 8
+		return true
+	}
+
+	return false
 }
