@@ -39,8 +39,6 @@ func main() {
 		log.Fatal(fmt.Errorf("invalid input in %s\n", inputFile))
 	}
 
-	fmt.Printf("num lines: %d\n", numLines)
-
 	sumRiskLevels, productBasinSizes := getSumRiskLevelsAndProductLargestBasins(fileContents)
 	fmt.Printf("Part One - Sum of Risk Levels: %d\n", sumRiskLevels)
 	fmt.Printf("Part Two - Product of Basin Sizes: %d\n", productBasinSizes)
@@ -58,7 +56,6 @@ func getSumRiskLevelsAndProductLargestBasins(data []string) (sumLowPoints int, p
 				sumLowPoints += Runetoi(point) + riskLevel
 				currentBasin := make(map[string]bool)
 				sizeBasin := sizeBasin(x, y, x, y, data, currentBasin)
-				fmt.Printf("point: %s, (%d, %d) - basin size: %d\n", string(point), x, y, sizeBasin)
 
 				sort.Ints(largestBasins)
 				if sizeBasin > largestBasins[0] {
@@ -112,7 +109,6 @@ func isLowest(val rune, x int, y int, data []string) bool {
 		}
 	}
 
-	fmt.Printf("Low point at (%d, %d) = %d\n", x, y, currentValue)
 	return true
 }
 
