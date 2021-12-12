@@ -155,7 +155,6 @@ func main() {
 	totalFlashes, simultaneous := ProcessSteps(octopi)
 	fmt.Printf("Day One - Total Flashes: %d\n", totalFlashes)
 	fmt.Printf("Day Two - All Flashed on Step %d\n", simultaneous)
-
 }
 
 func ProcessSteps(octopi [][]*Octopus) (totalFlashes int, simultaneous int) {
