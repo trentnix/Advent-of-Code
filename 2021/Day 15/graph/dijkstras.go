@@ -5,6 +5,11 @@ import (
 	"sort"
 )
 
+// the code below follows the algorithm specified for Dijkstra's Shortest Path
+// which finds the shortest path between two nodes on a connected graph
+// more information about Dijkstra's Shortest Path algorithm can be found at:
+// https://en.wikipedia.org/wiki/Dijkstra's_algorithm
+
 func (g *Graph) ShortestPathFromOrigin(origin int, destination int) int {
 	graphSize := g.NumNodes
 	if graphSize <= 1 {
@@ -17,18 +22,18 @@ func (g *Graph) ShortestPathFromOrigin(origin int, destination int) int {
 
 	visited := make([]bool, graphSize)
 	weights := make([]int, graphSize)
-	weights[0] = 0
+	weights[origin] = 0
 	for i := 1; i < graphSize; i++ {
 		weights[i] = math.MaxInt
 		visited[i] = false
 	}
 
-	g.DjikstrasShortestPath(origin, weights, visited)
+	g.CalculateShortestPath(origin, weights, visited)
 
 	return weights[destination]
 }
 
-func (g *Graph) DjikstrasShortestPath(position int, distances []int, visited []bool) {
+func (g *Graph) CalculateShortestPath(position int, distances []int, visited []bool) {
 	var edges PairList
 	edges = append(edges, Pair{position, 0})
 

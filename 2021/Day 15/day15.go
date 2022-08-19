@@ -30,7 +30,7 @@ func main() {
 
 	// If you want to print the grid, uncomment these lines.
 	// fmt.Printf("Original Graph:\n")
-	// g.PrintGraph(len(fileContents), len(fileContents[0]), int(fileContents[0][0]-'0'))
+	// g.PrintGraph(len(fileContents), len(fileContents[0]))
 	// fmt.Printf("\n")
 
 	// calculate the lowest risk from the uppermost left position to the lowest right position
