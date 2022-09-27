@@ -1,6 +1,7 @@
+// Package day16 implements the 2021 Advent of Code Day 16 assignment.
+// See the readme.md for details on this assignment or visit the Advent
+// of Code website: https://adventofcode.com/2021/day/16
 package main
-
-// see the readme.md for details on this assignment
 
 import (
 	"encoding/json"
@@ -10,7 +11,7 @@ import (
 	"os"
 	"strconv"
 
-	"sciencerocketry.com/fileprocessing"
+	"fileprocessing"
 )
 
 // main() prints the Part 1 and Part 2 solutions. It receives a single
