@@ -1,6 +1,6 @@
 module day14
 
-go 1.17
+go 1.21
 
 require (
     sciencerocketry.com/fileprocessing v0.0.0

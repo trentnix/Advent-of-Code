@@ -9,9 +9,9 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "Day 15/day15.go",
+            "program": "Day 18/day18.go",
             "args": [
-                "day15sample.txt"
+                "sample.txt"
             ]
         }
     ]
