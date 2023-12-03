@@ -38,7 +38,7 @@ func day1(name string, inputFile string) string {
 func day1part1(lines []string) int {
 	sumCalibrationValues := 0
 	for _, line := range lines {
-		sumCalibrationValues += getCalibrationValue(line)
+		sumCalibrationValues += getCalibrationValue(findfirstDigit(line), findLastDigit(line))
 	}
 
 	return sumCalibrationValues
@@ -46,10 +46,8 @@ func day1part1(lines []string) int {
 
 func day1part2(lines []string) int {
 	sumCalibrationValues := 0
-
 	for _, line := range lines {
-		updatedLine := replaceStringDigits(line)
-		sumCalibrationValues += getCalibrationValue(updatedLine)
+		sumCalibrationValues += getCalibrationValue(findfirstDigitWithSubstitution(line), findLastDigitWithSubstitution(line))
 	}
 
 	return sumCalibrationValues
@@ -87,6 +85,92 @@ func replaceStringDigits(line string) string {
 	return line
 }
 
+var defaultRune rune = 'x'
+
+func findfirstDigit(line string) rune {
+	runes := []rune(line)
+	for i := 0; i < len(runes); i++ {
+		if isDigit(runes[i]) {
+			return runes[i]
+		}
+	}
+
+	// default value
+	return defaultRune
+}
+
+func findLastDigit(line string) rune {
+	runes := []rune(line)
+	for i := len(runes); i >= 0; i-- {
+		if isDigit(runes[i]) {
+			return runes[i]
+		}
+	}
+
+	// default value
+	return defaultRune
+}
+
+func findfirstDigitWithSubstitution(line string) rune {
+	digits := [...]string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
+
+	runes := []rune(line)
+	for i := 0; i < len(runes); i++ {
+		if isDigit(runes[i]) {
+			return runes[i]
+		}
+
+		for _, digit := range digits {
+			found := strings.Index(line[i:], digit)
+			if found == 0 {
+				return convertStringDigitToRune(digit)
+			}
+		}
+	}
+
+	// default value
+	return defaultRune
+}
+
+func findLastDigitWithSubstitution(line string) rune {
+	runes := []rune(line)
+	for i := len(runes); i >= 0; i-- {
+		if isDigit(runes[i]) {
+			return runes[i]
+		}
+	}
+
+	// default value
+	return defaultRune
+}
+
+func convertStringDigitToRune(digit string) rune {
+	switch digit {
+	case "one":
+		return '1'
+	case "two":
+		return '2'
+	case "three":
+		return '3'
+	case "four":
+		return '4'
+	case "five":
+		return '5'
+	case "six":
+		return '6'
+	case "seven":
+		return '7'
+	case "eight":
+		return '8'
+	case "nine":
+		return '9'
+	default:
+		log.Fatal("Could not convert [", digit, "] to its numerical value")
+	}
+
+	return defaultRune
+}
+
 func convertStringDigitToInt(digit string) string {
 	switch digit {
 	case "one":
@@ -114,7 +198,16 @@ func convertStringDigitToInt(digit string) string {
 	return ""
 }
 
-func getCalibrationValue(line string) int {
+func getCalibrationValue(first rune, last rune) int {
+	calibrationVal, err := strconv.Atoi(string(first) + string(last))
+	if err != nil {
+		log.Fatal("There was an error converting ", string(first)+string(last), " to its calibration value: ", err)
+	}
+
+	return calibrationVal
+}
+
+func getCalibrationValueOld(line string) int {
 	var first, last rune
 
 	first = '!'
