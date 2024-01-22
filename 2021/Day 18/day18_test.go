@@ -2,7 +2,6 @@ package main
 
 import "testing"
 
-// TestParseTargetArea() tests the input parser that describes the target area.
 func TestSnailfishNumberExplode(t *testing.T) {
 	var tests = []struct {
 		input  string
