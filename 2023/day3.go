@@ -22,28 +22,75 @@ func day3(name string, inputFile string) string {
 		log.Fatal(err)
 	}
 
-	sumOfPartNumbers := strconv.Itoa(day3part1(fileContents))
+	e, partNumbers := processInput(fileContents)
+
+	sumOfPartNumbers := strconv.Itoa(day3part1(e, partNumbers))
 
 	var output strings.Builder
-	output.WriteString("Part 1:")
+	output.WriteString("Part 1:\n")
 	output.WriteString("The sum of all valid part numbers is: " + sumOfPartNumbers)
+	output.WriteString("\n")
+
+	sumOfGears := strconv.Itoa(day3part2(e, partNumbers))
+
+	output.WriteString("Part 2:\n")
+	output.WriteString("The sum of all gear ratios is: " + sumOfGears)
 
 	return output.String()
 }
 
 // day3part1() calculates the sum of partNumbers by looking for partNumbers that
 // have an adjacent symbol (which confirms it is a part number)
-func day3part1(input []string) int {
+func day3part1(e engineSchematic, partNumbers []partNumber) int {
 	sum := 0
-	e, partNumbers := processInput(input)
+
 	for _, partNumber := range partNumbers {
 		if e.partNumberHasAdjacentSymbol(partNumber) {
 			sum += partNumber.value
-		} else {
-			// fmt.Println(strconv.Itoa(partNumber.value) + " is not a part number")
-			// fmt.Println("start index: " + strconv.Itoa(partNumber.start) + " end index: " + strconv.Itoa(partNumber.end))
-			// fmt.Println("row: " + strconv.Itoa(partNumber.row))
-			// fmt.Println()
+		}
+	}
+
+	return sum
+}
+
+const gear_symbol = '*'
+
+func day3part2(e engineSchematic, partNumbers []partNumber) int {
+	sum := 0
+
+	// get each '*'
+	for row, r := range e {
+		for col, _ := range r {
+			if e[row][col] == gear_symbol {
+				firstGear := 0
+				secondGear := 0
+
+				// 	parse the partNumbers and find out if there are two gears that are adjacent
+				for _, partNumber := range partNumbers {
+					if row < partNumber.row-1 {
+						continue
+					}
+
+					if row > partNumber.row+1 {
+						continue
+					}
+
+					if partNumber.isAdjacentTo(row, col) {
+						if firstGear == 0 {
+							firstGear = partNumber.value
+						} else {
+							if secondGear == 0 {
+								secondGear = partNumber.value
+							} else {
+								log.Fatal("found more than two numbers adjacent to the gear at " + strconv.Itoa(row) + ", " + strconv.Itoa(col))
+							}
+						}
+					}
+				}
+
+				// 	if so, multiply and add to the sum (if no, the product will be 0)
+				sum += firstGear * secondGear
+			}
 		}
 	}
 
@@ -126,6 +173,18 @@ func (e engineSchematic) partNumberHasAdjacentSymbol(p partNumber) bool {
 			if !runeIsNumberOrDot(e[p.row+1][i]) {
 				return true
 			}
+		}
+	}
+
+	return false
+}
+
+// isAdjacentTo() the (x,y) coordinate provided is adjacent to the location of
+// the partNumber in the grid
+func (p partNumber) isAdjacentTo(row int, col int) bool {
+	if row >= p.row-1 && row <= p.row+1 {
+		if col >= p.start-1 && col <= p.end {
+			return true
 		}
 	}
 
