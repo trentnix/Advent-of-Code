@@ -22,7 +22,9 @@ func TestSumOfValidPartNumbers(t *testing.T) {
 
 	expectedSum := 4361
 
-	actualSum := day3part1(processInput(input))
+	e := new(engineSchematic)
+	e.new(input)
+	actualSum := day3part1(e)
 	if expectedSum != actualSum {
 		t.Errorf("expected: " + strconv.Itoa(expectedSum) + ", actual: " + strconv.Itoa(actualSum))
 	}
@@ -43,7 +45,10 @@ func TestSumOfGearRatios(t *testing.T) {
 	input := strings.Split(inputText, "\n")
 
 	expectedSum := 467835
-	actualSum := day3part2(processInput(input))
+
+	e := new(engineSchematic)
+	e.new(input)
+	actualSum := day3part2(e)
 	if expectedSum != actualSum {
 		t.Errorf("expected: " + strconv.Itoa(expectedSum) + ", actual: " + strconv.Itoa(actualSum))
 	}
