@@ -17,9 +17,11 @@ func TestSumOfWinningScratchcards(t *testing.T) {
 		{"Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11", 0},
 	}
 
-	var cards []card
+	var cards []*card
 	for i := 0; i < len(tests); i++ {
-		cards = append(cards, newCard(tests[i].card))
+		c := new(card)
+		_ = c.new(tests[i].card)
+		cards = append(cards, c)
 	}
 
 	for i, test := range tests {
@@ -50,9 +52,11 @@ func TestTotalNumberOfCardsFollowingTheRules(t *testing.T) {
 		{"Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11", 0},
 	}
 
-	var cards []card
+	var cards []*card
 	for i := 0; i < len(tests); i++ {
-		cards = append(cards, newCard(tests[i].card))
+		c := new(card)
+		_ = c.new(tests[i].card)
+		cards = append(cards, c)
 	}
 
 	numberOfCards := day4part2(cards)
