@@ -181,7 +181,7 @@ func day5(name string, inputFile string) string {
 	output.WriteString("Lowest Location: " + day5part1(a))
 	output.WriteString("\n")
 	output.WriteString("Part 2:\n")
-	// day 5 part 2 output here
+	output.WriteString("Lowest Location: " + day5part2(a))
 
 	return output.String()
 }
@@ -200,6 +200,39 @@ func day5part1(a *almanac) string {
 		if val < lowestLocation {
 			lowestLocation = val
 		}
+	}
+
+	return strconv.Itoa(lowestLocation)
+}
+
+// day5part2() has you traversing the maps on the almanac to find the lowest "location" number for
+// the given seed values but the seed values are a massive range
+//
+// note - current implementation is brute force but there are more efficient ways to solve this
+func day5part2(a *almanac) string {
+	lowestLocation := math.MaxInt64
+
+	numberOfSeedPairs := len(a.seeds) / 2
+
+	fmt.Printf("%d of %d pairs processed", 0, numberOfSeedPairs)
+
+	for i := 0; i < numberOfSeedPairs; i++ {
+		start := a.seeds[i*2]
+		end := a.seeds[i*2] + a.seeds[i*2+1]
+		for seed := start; seed < end; seed++ {
+			val, err := a.seedTo(seed, "location")
+			if err != nil {
+				log.Fatal("There was an error using seedTo()")
+			}
+
+			if val < lowestLocation {
+				lowestLocation = val
+			}
+		}
+
+		fmt.Print("\r\033[2K")
+		// Print the updated status message
+		fmt.Printf("%d of %d pairs processed", i, numberOfSeedPairs)
 	}
 
 	return strconv.Itoa(lowestLocation)
