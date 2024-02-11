@@ -16,7 +16,9 @@ func TestPossibleGames(t *testing.T) {
 
 	games := make([]*game, 0)
 	for _, input := range inputs {
-		games = append(games, newGame(input))
+		g := new(game)
+		g.new(input)
+		games = append(games, g)
 	}
 
 	expectedSum := 8
@@ -36,7 +38,9 @@ func TestPowerSum(t *testing.T) {
 
 	games := make([]*game, 0)
 	for _, input := range inputs {
-		games = append(games, newGame(input))
+		g := new(game)
+		g.new(input)
+		games = append(games, g)
 	}
 
 	expectedPowerSum := 2286
@@ -54,8 +58,8 @@ func TestNewGame(t *testing.T) {
 	inputs = append(inputs, "Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red")
 	inputs = append(inputs, "Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green")
 
-	results := make([]game, 0)
-	results = append(results, game{
+	results := make([]*game, 0)
+	results = append(results, &game{
 		sets: []*set{
 			{red: 4, green: 0, blue: 3},
 			{red: 1, green: 2, blue: 6},
@@ -65,7 +69,9 @@ func TestNewGame(t *testing.T) {
 	)
 
 	for i, result := range results {
-		err := validateGame(*newGame(inputs[i]), result)
+		g := new(game)
+		g.new(inputs[i])
+		err := validateGame(g, result)
 		if err != nil {
 			t.Errorf(err.Error())
 		}
@@ -73,7 +79,7 @@ func TestNewGame(t *testing.T) {
 
 }
 
-func validateGame(g1 game, g2 game) error {
+func validateGame(g1 *game, g2 *game) error {
 	if g1.id != g2.id {
 		return errors.New("game1.id != game2.id")
 	}

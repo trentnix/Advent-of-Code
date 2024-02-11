@@ -23,10 +23,60 @@ type game struct {
 	id   int
 }
 
-func (g game) print() {
+func (g *game) print() {
 	fmt.Printf("game.id: %d\n", g.id)
 	for i, s := range g.sets {
 		fmt.Printf("Set %d - Red: %d, Green: %d, Blue: %d\n", i+1, s.red, s.green, s.blue)
+	}
+}
+
+func (g *game) new(input string) {
+	index := strings.Index(input, ": ")
+	if index < 0 {
+		log.Fatal("When parsing '" + input + "' the index for a ':' value could not be found")
+	}
+
+	id, err := strconv.Atoi(input[5:index])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	g.id = id
+
+	sets := strings.Split(input[index+1:], ";")
+
+	numSets := len(sets)
+	if numSets > 0 {
+		g.sets = make([]*set, numSets)
+	}
+
+	for i, thisSet := range sets {
+		// clean up the input string by removing leading and trailing spaces
+		thisSet = strings.Trim(thisSet, " ")
+
+		// initialize the set
+		g.sets[i] = new(set)
+		g.sets[i].blue = 0
+		g.sets[i].green = 0
+		g.sets[i].red = 0
+
+		values := strings.Split(thisSet, ", ")
+		for _, value := range values {
+			redVal := getColorValue(value, "red")
+			if redVal > 0 {
+				g.sets[i].red = redVal
+			}
+
+			blueVal := getColorValue(value, "blue")
+			if blueVal > 0 {
+				g.sets[i].blue = blueVal
+			}
+
+			greenVal := getColorValue(value, "green")
+			if greenVal > 0 {
+				g.sets[i].green = greenVal
+			}
+		}
 	}
 }
 
@@ -40,7 +90,7 @@ func day2(name string, inputFile string) string {
 
 	games := make([]*game, len(fileContents))
 	for i, input := range fileContents {
-		games[i] = newGame(input)
+		games[i].new(input)
 	}
 
 	sumOfPossibleGames := day2part1(games)
@@ -114,63 +164,6 @@ func day2part2(games []*game) int {
 	}
 
 	return sum
-}
-
-// newGame() takes the string input and parses it into a 'game' structure
-func newGame(input string) *game {
-	g := new(game)
-
-	// get the game number - this may be unnecessary since they seem sequential but who knows what
-	// part 2 of day 2 holds
-	index := strings.Index(input, ": ")
-	if index < 0 {
-		log.Fatal("When parsing '" + input + "' the index for a ':' value could not be found")
-	}
-
-	id, err := strconv.Atoi(input[5:index])
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	g.id = id
-
-	sets := strings.Split(input[index+1:], ";")
-
-	numSets := len(sets)
-	if numSets > 0 {
-		g.sets = make([]*set, numSets)
-	}
-
-	for i, thisSet := range sets {
-		// clean up the input string by removing leading and trailing spaces
-		thisSet = strings.Trim(thisSet, " ")
-
-		// initialize the set
-		g.sets[i] = new(set)
-		g.sets[i].blue = 0
-		g.sets[i].green = 0
-		g.sets[i].red = 0
-
-		values := strings.Split(thisSet, ", ")
-		for _, value := range values {
-			redVal := getColorValue(value, "red")
-			if redVal > 0 {
-				g.sets[i].red = redVal
-			}
-
-			blueVal := getColorValue(value, "blue")
-			if blueVal > 0 {
-				g.sets[i].blue = blueVal
-			}
-
-			greenVal := getColorValue(value, "green")
-			if greenVal > 0 {
-				g.sets[i].green = greenVal
-			}
-		}
-	}
-
-	return g
 }
 
 // getColorValue() takes a given color and, if it exists in the input string 'value', it
