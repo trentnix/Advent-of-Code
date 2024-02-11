@@ -1,6 +1,6 @@
-// this file implements the 2023 Advent of Code Day 2 assignment.
+// this file implements the 2023 Advent of Code Day 4 assignment.
 // See the readme.md for details on this assignment or visit the Advent
-// of Code website: https://adventofcode.com/2023/day/2
+// of Code website: https://adventofcode.com/2023/day/4
 
 package main
 

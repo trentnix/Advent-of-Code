@@ -123,6 +123,11 @@ func initializeExercises() []exercise {
 			input:  "Day 4/day.input",
 			myFunc: day4,
 		},
+		{
+			name:   "Day 5",
+			input:  "Day 5/day.input",
+			myFunc: day5,
+		},
 	}
 
 	return exercises
