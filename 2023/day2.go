@@ -23,6 +23,7 @@ type game struct {
 	id   int
 }
 
+// game.print() prints a game
 func (g *game) print() {
 	fmt.Printf("game.id: %d\n", g.id)
 	for i, s := range g.sets {
@@ -30,6 +31,7 @@ func (g *game) print() {
 	}
 }
 
+// game.new() parses an input string into a game structure
 func (g *game) new(input string) {
 	index := strings.Index(input, ": ")
 	if index < 0 {
